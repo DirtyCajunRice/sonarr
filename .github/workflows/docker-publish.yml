@@ -6,7 +6,7 @@ jobs:
   version-check:
     runs-on: ubuntu-latest
     outputs: 
-      version: steps.step1.outputs.version
+      version: ${{ steps.step1.outputs.version }}
     steps:
       - name: Get Version
         run: |
