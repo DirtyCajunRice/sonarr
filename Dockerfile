@@ -1,15 +1,15 @@
 FROM itscontained/mono:6.10.0.104
+MAINTAINER dirtycajunrice
 
-LABEL maintainer="dirtycajunrice"
+ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN \
  # add sonarr repo
- apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC && \
- echo "deb http://apt.sonarr.tv/ develop main" > /etc/apt/sources.list.d/sonarr.list && \
+ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 2009837CBFFD68F45BC180471F4F90DE2A9B4BF8 && \
+ echo "deb http://apt.sonarr.tv/ubuntu focal-develop main" > /etc/apt/sources.list.d/sonarr.list && \
  # install packages
- apt-get update --allow-insecure-repositories && \
- apt-get install -y --allow-unauthenticated \
-	nzbdrone && \
+ apt update && \
+ apt install -y sonarr && \
  # cleanup
  apt-get clean && \
  rm -rf \
@@ -20,4 +20,4 @@ RUN \
 # ports
 EXPOSE 8989
 
-CMD mono --debug Sonarr.exe -nobrowser
+CMD mono --debug /usr/lib/sonarr/bin/Sonarr.exe mono -nobrowser
