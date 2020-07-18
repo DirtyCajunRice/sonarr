@@ -1,7 +1,7 @@
 FROM itscontained/mono:6.10.0.104
 MAINTAINER dirtycajunrice
 
-ARG SONARR_VERSION
+ARG VERSION
 ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN \
@@ -10,7 +10,7 @@ RUN \
  echo "deb http://apt.sonarr.tv/ubuntu focal-develop main" > /etc/apt/sources.list.d/sonarr.list && \
  # install packages
  apt update && \
- apt install -y sonarr=${SONARR_VERSION} && \
+ apt install -y sonarr=${VERSION} && \
  # cleanup
  apt-get clean && \
  rm -rf \
