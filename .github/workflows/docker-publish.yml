@@ -1,0 +1,56 @@
+name: Docker
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+  # Run tests for any PRs.
+  pull_request:
+jobs:
+  #test:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - uses: actions/checkout@v2
+  #    - name: Run tests
+  #      run: |
+  #        if [ -f docker-compose.test.yml ]; then
+  #          docker-compose --file docker-compose.test.yml build
+  #          docker-compose --file docker-compose.test.yml run sut
+  #        else
+  #          docker build . --file Dockerfile
+  #        fi
+  push:
+    # Ensure test job passes before pushing image.
+    #needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, 'docker skip')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: docker build . --file Dockerfile --tag ${{ github.repository }}
+      - name: Import Secrets
+        uses: RichiCoder1/vault-action@v1.0.1
+        with:
+          url: ${{ secrets.VaultURL }}
+          method: approle
+          roleId: ${{ secrets.appRoleID }}
+          secretId: ${{ secrets.appSecretID }}
+          path: kv-v2
+          secrets: |
+              auth/dockerhubci username | DOCKERHUB_USERNAME ;
+              auth/dockerhubci token | DOCKERHUB_TOKEN
+      - name: Log into registry
+        run: echo ${DOCKERHUB_TOKEN//\"} | docker login -u ${DOCKERHUB_USERNAME//\"} --password-stdin
+      - name: Push image
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=${{ github.repository }}
+          echo VERSION=$VERSION
+          docker tag ${{ github.repository }} ${{ github.repository }}:$VERSION
+          docker push ${{ github.repository }}:$VERSION

@@ -1,0 +1,28 @@
+name: Upstream Version Check
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+jobs:
+  check-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+      - name: Get Version
+        id: version
+        run: |
+          NEW_VER=$(curl -s https://services.sonarr.tv/v1/download/phantom-develop?version=3 | jq -r .version)
+          if [[ -n "$(git tag -l v${NEW_VER})" ]]
+          then
+            echo ::set-output name=version::$NEW_VER
+          else
+            echo ::set-output name=version::""
+          fi
+      - name: Tag Repo
+        uses: richardsimko/update-tag@v1.0.3
+        if: steps.version.outputs.version != ''
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
