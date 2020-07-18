@@ -1,4 +1,4 @@
-name: Docker
+name: Check and Push
 on:
   schedule:
     - cron: '*/5 * * * *'
