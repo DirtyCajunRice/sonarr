@@ -29,7 +29,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build image
-        run: docker build . --file Dockerfile --tag ${{ github.repository }}:${{ needs.version-check.outputs.version }}
+        run: docker build . --file Dockerfile \
+               --tag ${{ github.repository }}:${{ needs.version-check.outputs.version }} \
+               --tag ${{ github.repository }}:latest
       - name: Import Secrets
         uses: RichiCoder1/vault-action@v1.0.1
         with:
@@ -46,6 +48,4 @@ jobs:
       - name: Push image
         run: |
           VERSION=${{ needs.version-check.outputs.version }}
-          docker tag ${{ github.repository }}:${VERSION} ${{ github.repository }}:latest
-          docker push ${{ github.repository }}:${VERSION}
-          docker push ${{ github.repository }}:latest
+          docker push ${{ github.repository }}
