@@ -1,6 +1,7 @@
 FROM itscontained/mono:6.10.0.104
 MAINTAINER dirtycajunrice
 
+ARG SONARR_VERSION
 ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN \
@@ -9,13 +10,16 @@ RUN \
  echo "deb http://apt.sonarr.tv/ubuntu focal-develop main" > /etc/apt/sources.list.d/sonarr.list && \
  # install packages
  apt update && \
- apt install -y sonarr && \
+ apt install -y sonarr=${SONARR_VERSION} && \
  # cleanup
  apt-get clean && \
  rm -rf \
 	/tmp/* \
 	/var/lib/apt/lists/* \
-	/var/tmp/*
+	/var/tmp/* && \
+ # make package info
+ sed -i 's,Author.*,Author=[Team itscontained](https://github.com/itscontained),;s/apt/docker/' \
+    /usr/lib/sonarr/package_info
 
 # ports
 EXPOSE 8989

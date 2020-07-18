@@ -1,7 +1,7 @@
 name: Check and Push
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/30 * * * *'
 jobs:
   version-check:
     runs-on: ubuntu-latest
@@ -29,7 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build image
-        run: docker build . --file Dockerfile \
+        run: docker build --build-args SONARR_VERSION=${{ needs.version-check.outputs.version }} . \
+               --file Dockerfile \
                --tag ${{ github.repository }}:${{ needs.version-check.outputs.version }} \
                --tag ${{ github.repository }}:latest
       - name: Import Secrets
