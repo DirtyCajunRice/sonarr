@@ -1,7 +1,7 @@
 name: Upstream Version Check
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '* * * * *'
 jobs:
   check-and-push:
     runs-on: ubuntu-latest
@@ -12,6 +12,7 @@ jobs:
       - name: Get Version
         id: version
         run: |
+          apt install jq -y
           NEW_VER=$(curl -s https://services.sonarr.tv/v1/download/phantom-develop?version=3 | jq -r .version)
           if [[ -n "$(git tag -l v${NEW_VER})" ]]
           then
