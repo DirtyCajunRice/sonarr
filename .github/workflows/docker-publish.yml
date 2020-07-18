@@ -29,10 +29,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build image
-        run: docker build --build-arg VERSION=${{ needs.version-check.outputs.version }} . \
+        run: docker build --build-arg VERSION=${{ needs.version-check.outputs.version }} \
                --file Dockerfile \
                --tag ${{ github.repository }}:${{ needs.version-check.outputs.version }} \
-               --tag ${{ github.repository }}:latest
+               --tag ${{ github.repository }}:latest .
       - name: Import Secrets
         uses: RichiCoder1/vault-action@v1.0.1
         with:
