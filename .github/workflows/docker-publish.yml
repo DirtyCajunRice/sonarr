@@ -17,11 +17,12 @@ jobs:
             echo ::set-output name=version::$CURRENT_VERSION
           else
             echo Found existing tag in repo
+            echo ::set-output name=version::""
           fi
   push:
     needs: version-check
     runs-on: ubuntu-latest
-    if: needs.version-check.outputs.version
+    if: needs.version-check.outputs.version != ''
     steps:
       - uses: actions/checkout@v2
       - name: Build image
