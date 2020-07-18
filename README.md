@@ -19,7 +19,7 @@ This image provides various versions that are available via tags. `latest` tag u
 
 | Tag | Description |
 | :----: | --- |
-| latest | Newest v3 release from Radarr |
+| latest | Newest v3 release from Sonarr |
 | {semver} | Individual releases as they come |
 
 ## Parameters
