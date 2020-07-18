@@ -5,7 +5,8 @@ on:
 jobs:
   version-check:
     runs-on: ubuntu-latest
-    outputs: steps.step1.outputs.version
+    outputs: 
+      version: steps.step1.outputs.version
     steps:
       - name: Get Version
         run: |
