@@ -22,7 +22,7 @@ jobs:
   push:
     needs: version-check
     runs-on: ubuntu-latest
-    if: needs.version-check.outputs.version != ''
+    if: jobs.version-check.outputs.version != ''
     steps:
       - uses: actions/checkout@v2
       - name: Build image
