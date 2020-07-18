@@ -5,6 +5,7 @@ on:
 jobs:
   version-check:
     runs-on: ubuntu-latest
+    outputs: steps.step1.outputs.version
     steps:
       - name: Get Version
         run: |
@@ -22,7 +23,7 @@ jobs:
   push:
     needs: version-check
     runs-on: ubuntu-latest
-    if: jobs.version-check.outputs.version != ''
+    if: needs.version-check.outputs.version
     steps:
       - uses: actions/checkout@v2
       - name: Build image
