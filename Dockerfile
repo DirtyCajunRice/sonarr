@@ -17,7 +17,7 @@ RUN \
 	/tmp/* \
 	/var/lib/apt/lists/* \
 	/var/tmp/* && \
- # make package info
+ # modify package info
  sed -i 's,Author.*,Author=[Team itscontained](https://github.com/itscontained),;s/apt/docker/' \
     /usr/lib/sonarr/package_info
 
