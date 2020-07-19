@@ -1,0 +1,28 @@
+name: Sync Info
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - README.md
+      - .github/workflows/info-sync.yml
+jobs:
+  update-description:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Import Secrets
+        uses: RichiCoder1/vault-action@v1.0.1
+        with:
+          url: ${{ secrets.VaultURL }}
+          method: approle
+          roleId: ${{ secrets.appRoleID }}
+          secretId: ${{ secrets.appSecretID }}
+          path: kv-v2
+          secrets: |
+            auth/dockerhubci username | DOCKERHUB_USERNAME ;
+            auth/dockerhubci password | DOCKERHUB_PASSWORD
+      - name: Sync Info
+        uses: peter-evans/dockerhub-description@v2
+        env:
+          DOCKERHUB_REPOSITORY: ${{ github.repository }}
