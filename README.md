@@ -5,6 +5,7 @@
 [![MicroBadger Layers](https://img.shields.io/microbadger/layers/itscontained/sonarr.svg?color=00E5D2&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=docker)](https://microbadger.com/images/itscontained/sonarr)
 [![Docker Pulls](https://img.shields.io/docker/pulls/itscontained/sonarr.svg?color=00E5D2&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/itscontained/sonarr)
 [![Docker Stars](https://img.shields.io/docker/stars/itscontained/sonarr.svg?color=00E5D2&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=stars&logo=docker)](https://hub.docker.com/r/itscontained/sonarr)
+[![Discord](https://img.shields.io/discord/734273194818535474?color=00E5D2&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=support&logo=discord)](https://hub.docker.com/r/itscontained/sonarr)
 
 ## Supported Architectures
 The architectures supported by this image are:
@@ -40,10 +41,10 @@ This is built the way docker initially intended. That means all parameters are t
 ```bash
 docker run \
     --name radarr \
-    --publish 7878:7878 \
+    --publish 8989:8989 \
     --volume <host config path>:/var/lib/sonarr \
     --rm \
     --detach \
     --user 567:567 \
-    itscontained/sonarr:latest \
+    itscontained/sonarr:latest
 ```
