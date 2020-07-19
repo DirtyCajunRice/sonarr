@@ -39,7 +39,7 @@ EXPOSE 8989
 USER sonarr:sonarr
 
 # Convenience dir
-WORKDIR /var/lb/radarr
+WORKDIR /var/lib/sonarr
 
 # Run sonarr with umask set
 CMD umask ${UMASK} && mono --debug /usr/lib/sonarr/bin/Sonarr.exe -nobrowser -data=/var/lib/sonarr
