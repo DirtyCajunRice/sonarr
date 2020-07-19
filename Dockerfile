@@ -38,5 +38,8 @@ EXPOSE 8989
 # set default user
 USER sonarr:sonarr
 
+# Convenience dir
+WORKDIR /var/lb/radarr
+
 # Run sonarr with umask set
 CMD umask ${UMASK} && mono --debug /usr/lib/sonarr/bin/Sonarr.exe -nobrowser -data=/var/lib/sonarr
